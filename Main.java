@@ -7,18 +7,22 @@ public class Main {
         Scanner s = new Scanner(System.in);
         System.out.println("Please enter two integers.");
 
-        final int num1 = s.nextInt(); // Only num1 is final; num2 can still be changed.
-        int num2 = s.nextInt();
+        final int num1 = s.nextInt();
+        double num2 = s.nextDouble();
 
         s.close();
 
-        num2++; // Adds 1 to num2
-
         try {
-            System.out.print(num1 / num2);
+            int answer = num1 / (int) (num2 + 0.5);
+
+            System.out.println(answer);
+
+            boolean special_bool = true;
+
+            System.out.print("Division: " + special_bool + ", Answer + 1 is: " + (answer++));
         }
         catch (ArithmeticException e) {
-            System.out.print("Can't divide by zero.");
+            System.out.println(e);
         }
 
     }
