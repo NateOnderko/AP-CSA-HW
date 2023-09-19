@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner s = new Scanner(System.in);
-        System.out.println("Please enter two integers.");
+        System.out.println("Please enter two integers:");
 
         final int num1 = s.nextInt();
         double num2 = s.nextDouble();
@@ -19,11 +19,15 @@ public class Main {
 
             boolean special_bool = true;
 
-            System.out.print("Division: " + special_bool + ", Answer + 1 is: " + (answer++));
+            answer ++;
+            System.out.println("Division: " + special_bool + ", Answer + 1 is: " + answer);
         }
         catch (ArithmeticException e) {
             System.out.println(e);
         }
+
+        int one_above = Integer.MAX_VALUE + 3;
+        System.out.print(one_above);
 
     }
 }
