@@ -7,27 +7,29 @@ public class Main {
         Scanner s = new Scanner(System.in);
         System.out.println("Please enter two integers:");
 
-        final int num1 = s.nextInt();
-        double num2 = s.nextDouble();
+        Calculator calc = new Calculator(s.nextInt(), s.nextInt());
+        final boolean CALC_ONLINE = true;
+        double favoriteNumber = 3.07;
+
 
         s.close();
 
-        try {
-            int answer = num1 / (int) (num2 + 0.5);
+        System.out.println("Calculator online: " + CALC_ONLINE + ", Favorite Number: " + favoriteNumber);
+        System.out.println("");
 
-            System.out.println(answer);
-
-            boolean special_bool = true;
-
-            answer ++;
-            System.out.println("Division: " + special_bool + ", Answer + 1 is: " + answer);
-        }
-        catch (ArithmeticException e) {
-            System.out.println(e);
-        }
-
-        int one_above = Integer.MAX_VALUE + 3;
-        System.out.print(one_above);
-
+        calc.print_nums();
+        calc.divide();
+        calc.multiply();
+        calc.add();
+        calc.subtract();
+        System.out.println("");
+        calc.change_nums();
+        calc.round_nums();
+        System.out.println("");
+        calc.print_nums();
+        calc.divide();
+        calc.multiply();
+        calc.add();
+        calc.subtract();
     }
 }
