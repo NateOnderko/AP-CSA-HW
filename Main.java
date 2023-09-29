@@ -34,5 +34,16 @@ public class Main {
         calc.multiply();
         calc.add();
         calc.subtract();
+        System.out.println();
+
+        Calculator newCalc = null;
+
+        try {
+            newCalc.print_nums();
+        }
+        catch(NullPointerException e) {
+            System.out.println(e);
+        }
+
     }
 }
