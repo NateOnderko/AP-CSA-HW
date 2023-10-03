@@ -52,9 +52,17 @@ public class Calculator {
         System.out.println("Num 1: " + num1 + ", Num 2: " + num2 + ", Secret Num: " + secret_num);
     }
 
-    public void change_nums() {
-        num1 = Integer.MAX_VALUE;
-        num2 = Integer.MIN_VALUE;
+    public void change_nums(int a, int b) {
+        num1 = a;
+        num2 = b;
+
+        System.out.println("NUMS CHANGED.");
+    }
+
+    public void change_nums(int a, int b, int c) {
+        num1 = a;
+        num2 = b;
+        secret_num = c;
 
         System.out.println("NUMS CHANGED.");
     }

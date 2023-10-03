@@ -26,7 +26,7 @@ public class Main {
         calc.add();
         calc.subtract();
         System.out.println();
-        calc.change_nums();
+        calc.change_nums(Integer.MAX_VALUE, Integer.MIN_VALUE);
         calc.round_nums();
         System.out.println();
         calc.print_nums();
