@@ -45,5 +45,9 @@ public class Main {
             System.out.println(e);
         }
 
+        Deck newDeck = new Deck();
+        System.out.println(newDeck.getDeck());
+        newDeck.pickCard();
+
     }
 }
