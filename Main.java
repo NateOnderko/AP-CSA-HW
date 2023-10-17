@@ -47,7 +47,7 @@ public class Main {
 
         Deck newDeck = new Deck();
         System.out.println(newDeck.getDeck().size());
-        Deck.Card tempCard = newDeck.pickCard();
+        Card tempCard = newDeck.pickCard();
         System.out.println(tempCard.getCardType() + " " + tempCard.getSuit());
         System.out.println(newDeck.getDeck().size());
         tempCard = newDeck.pickCard();

@@ -3,25 +3,6 @@ import java.util.Random;
 
 public class Deck {
 
-    public class Card {
-
-        private String cardType;
-        private String suit;
-
-        public Card(String t, String s) {
-            cardType = t;
-            suit = s;
-        }
-
-        public String getCardType() {
-            return cardType;
-        }
-
-        public String getSuit() {
-            return suit;
-        }
-    }
-
     private ArrayList<Card> deck = new ArrayList<>();
     private String[] suits = {"Spades", "Diamonds", "Hearts", "Clubs"};
     private String[] cardNames = {"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
