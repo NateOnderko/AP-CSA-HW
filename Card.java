@@ -1,18 +1,24 @@
 public class Card {
 
-    private String cardType;
-    private String suit;
+    private final String CARD_NAME;
+    private final String SUIT;
+    private final int CARD_VAL;
 
-    public Card(String t, String s) {
-        cardType = t;
-        suit = s;
+    public Card(String t, String s, int v) {
+        CARD_NAME = t;
+        SUIT = s;
+        CARD_VAL = v;
     }
 
     public String getCardType() {
-        return cardType;
+        return CARD_NAME;
     }
 
     public String getSuit() {
-        return suit;
+        return SUIT;
+    }
+
+    public int getCardVal() {
+        return CARD_VAL;
     }
 }
