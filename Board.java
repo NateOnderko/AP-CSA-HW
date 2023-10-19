@@ -98,7 +98,7 @@ public class Board {
                 System.out.println("Player " + (start % PLAYERS.size() + 1) + ": " + "Would you like to (f) Fold, (g) Call, or (r) Raise?");
             }
             else {
-                System.out.println("Player " + (start % PLAYERS.size() + 1) + ": " + "Would you like to (f) Fold, (c) Check, or (b) Bet?");
+                System.out.println("Player " + (start % PLAYERS.size() + 1) + ": " + "Would you like to (f) Fold, (c) Check, or (b) Bet/Raise?");
             }
 
             String input = SCANNER.nextLine().toLowerCase();
@@ -106,10 +106,16 @@ public class Board {
             if (input.equals("f")) {
 
             }
-            else-if (input.equals("c")) {
+            else if (input.equals("c")) {
                 System.out.println("Player " + (start % PLAYERS.size() + 1) + ": " + "Checked.");
             }
-            else-if (input.equals("b")) {
+            else if (input.equals("g")) {
+                PLAYERS.get(start).makeBet(activeBet - PLAYERS.get(start).getBet());
+                pot += activeBet - PLAYERS.get(start).getBet();
+
+                System.out.println("Player " + (start % PLAYERS.size() + 1) + ": " + "Called.");
+            }
+            else if (input.equals("b")) {
                 System.out.println("How much would you like to bet? ");
                 double bet = SCANNER.nextDouble();
                 PLAYERS.get(start).makeBet(bet);
@@ -118,7 +124,7 @@ public class Board {
 
                 System.out.println("Player " + (start % PLAYERS.size() + 1) + ": " + "Bet " + activeBet + ".");
             }
-            else-if (input.equals("r")) {
+            else if (input.equals("r")) {
                 System.out.println("How much would you like to raise? ");
                 double raise = SCANNER.nextDouble();
                 PLAYERS.get(start).makeBet(activeBet + raise);
