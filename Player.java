@@ -3,11 +3,13 @@ import java.util.ArrayList;
 public class Player {
 
     private double stack;
+    private double bet;
+    private final String NAME;
     private final ArrayList<Card> HAND = new ArrayList<>();
 
-    public Player(Deck d, double s) {
+    public Player(double s, String n) {
         stack = s;
-        resetHand(d);
+        NAME = n;
     }
 
     public void resetHand(Deck d) {
@@ -24,8 +26,12 @@ public class Player {
         return stack;
     }
 
-    public String handString() {
-        return HAND.get(0).getCardType() + " of " + HAND.get(0).getSuit() + " and " + HAND.get(1).getCardType() + " of " + HAND.get(1).getSuit();
+    public String getName() {
+        return NAME;
+    }
+
+    public String toString() {
+        return "Name: " + NAME + ", Stack: " + stack + ", Hand: " + HAND.get(0).getCardType() + " of " + HAND.get(0).getSuit() + " and " + HAND.get(1).getCardType() + " of " + HAND.get(1).getSuit();
     }
 
 }
