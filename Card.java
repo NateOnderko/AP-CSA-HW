@@ -21,4 +21,8 @@ public class Card {
     public int getCardVal() {
         return CARD_VAL;
     }
+
+    public String toString() {
+        return CARD_NAME + " of " + SUIT;
+    }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
+import java.util.*;
 
 public class Board {
 
@@ -90,6 +90,49 @@ public class Board {
             System.out.println("Player " + i + ": " + p);
             i += 1;
         }
+    }
+
+    public Dictionary<Integer, Integer> handStrength(Player p) {
+        ArrayList<Card> cardList = new ArrayList<>();
+        Map<Integer, Integer> cardDict = new HashMap<>();;
+
+        cardList.addAll(p.getHand());
+        cardList.addAll(COMMUNITY_CARDS);
+
+        // check for pairs, three of a kind, and quads
+
+        ArrayList<Integer> pairs = new ArrayList<>();
+        ArrayList<Integer> trips = new ArrayList<>();
+        ArrayList<Integer> quads = new ArrayList<>();
+
+        for (Card c : cardList) {
+            int cardVal = c.getCardVal();
+
+            if (cardDict.get(cardVal) == null) {
+                cardDict.put(cardVal, 1);
+            }
+            else {
+                cardDict.put(cardVal, cardDict.get(cardVal) + 1);
+            }
+        }
+
+        for (Integer v : cardDict.keySet()) {
+            int cardNum = cardDict.get(v);
+
+            if (cardNum == 2) {
+                pairs.add(v);
+            }
+            else if (cardNum == 3) {
+                trips.add(v);
+            }
+            else if (cardNum == 4) {
+                quads.add(v);
+            }
+        }
+
+        return pairs, trips, quads;
+
+
     }
 
     public void bettingRound(int start) {
