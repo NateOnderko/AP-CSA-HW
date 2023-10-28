@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.*;
+import java.util.Collections;
 
 public class Board {
 
@@ -92,22 +93,29 @@ public class Board {
         }
     }
 
-    public Dictionary<Integer, Integer> handStrength(Player p) {
+    public void handStrength(Player p) {
         ArrayList<Card> cardList = new ArrayList<>();
-        Map<Integer, Integer> cardDict = new HashMap<>();;
 
         cardList.addAll(p.getHand());
         cardList.addAll(COMMUNITY_CARDS);
 
+        ArrayList<Integer> cardValList = new ArrayList<>();
+
+        for (Card c : cardList) {
+            cardValList.add(c.getCardVal());
+        }
+
+        Collections.sort(cardValList);
+
         // check for pairs, three of a kind, and quads
+
+        Map<Integer, Integer> cardDict = new HashMap<>();;
 
         ArrayList<Integer> pairs = new ArrayList<>();
         ArrayList<Integer> trips = new ArrayList<>();
         ArrayList<Integer> quads = new ArrayList<>();
 
-        for (Card c : cardList) {
-            int cardVal = c.getCardVal();
-
+        for (Integer cardVal: cardValList) {
             if (cardDict.get(cardVal) == null) {
                 cardDict.put(cardVal, 1);
             }
@@ -130,9 +138,44 @@ public class Board {
             }
         }
 
-        return pairs, trips, quads;
+        System.out.println("Pairs: " + pairs);
+        System.out.println("Trips: " + trips);
+        System.out.println("Quads: " + quads);
 
+        // check for straight
 
+        Set<Integer> cardValSet = new HashSet<>(cardValList);
+
+        ArrayList<Integer> cardValListNoDuplicate = new ArrayList<>(cardValSet);
+
+        int index = cardValListNoDuplicate.size() - 1;
+        int checker = cardValListNoDuplicate.get(index) - 1;
+        int straightVal = 1;
+
+        ArrayList<Integer> straights = new ArrayList<>();
+
+        while (checker >= 2 && index >= 0) {
+            if (straightVal == 5 || ! cardValListNoDuplicate.contains(checker)) {
+                if (straightVal == 5) {
+                    straights.add(checker + 1);
+                }
+
+                if (index == 0) {
+                    break;
+                }
+
+                index -= 1;
+                checker = cardValListNoDuplicate.get(index) - 1;
+                straightVal = 1;
+            }
+            else {
+                checker -= 1;
+                straightVal += 1;
+            }
+
+        }
+
+        System.out.println("Straights: " + straights);
     }
 
     public void bettingRound(int start) {
