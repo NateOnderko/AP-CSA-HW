@@ -13,6 +13,7 @@ public class Player {
     }
 
     public void resetHand(Deck d) {
+        bet = 0;
         HAND.clear();
         HAND.add(d.pickCard());
         HAND.add(d.pickCard());
@@ -31,7 +32,15 @@ public class Player {
     }
 
     public String toString() {
-        return "Name: " + NAME + ", Stack: " + stack + ", Hand: " + HAND.get(0).getCardType() + " of " + HAND.get(0).getSuit() + " and " + HAND.get(1).getCardType() + " of " + HAND.get(1).getSuit();
+        return "Name: " + NAME + ", Stack: " + stack + ", Hand: " + HAND.get(0) + ", and " + HAND.get(1);
     }
 
+    public void makeBet(double b) {
+        bet = b;
+        stack -= b;
+    }
+
+    public double getBet() {
+        return bet;
+    }
 }
