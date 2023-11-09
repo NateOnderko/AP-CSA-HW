@@ -124,9 +124,51 @@ public class Board {
 
         // check pairs, trips, quads
 
-        ArrayList<Card> pairs = new ArrayList<>();
-        ArrayList<Card> trips = new ArrayList<>();
-        ArrayList<Card> quads = new ArrayList<>();
+        ArrayList<ArrayList<Card>> pairs = new ArrayList<>();
+        ArrayList<ArrayList<Card>> trips = new ArrayList<>();
+        ArrayList<ArrayList<Card>> quads = new ArrayList<>();
+
+
+        ArrayList<Card> tempPairs = new ArrayList<>();
+        tempPairs.add(cardList.get(0));
+
+        for (int i = 1; i < size; i++) {
+            System.out.println(tempPairs);
+            if (cardList.get(i).getCardVal() == tempPairs.get(tempPairs.size() - 1).getCardVal()) {
+                tempPairs.add(cardList.get(i));
+            }
+            else {
+                int pairLen = tempPairs.size();
+                if (pairLen == 2) {
+                    pairs.add(copyList(tempPairs));
+                }
+                else if (pairLen == 3) {
+                    trips.add(copyList(tempPairs));
+                }
+                else if (pairLen == 4) {
+                    quads.add(copyList(tempPairs));
+                }
+
+                tempPairs.clear();
+                tempPairs.add(cardList.get(i));
+            }
+        }
+
+        System.out.println("Pairs: " + pairs);
+        System.out.println("Trips: " + trips);
+        System.out.println("Quads: " + quads);
+    }
+
+
+    public ArrayList<Card> copyList(ArrayList<Card> c) {
+        ArrayList<Card> newList = new ArrayList<>();
+
+        for(Card card : c)
+        {
+            newList.add(card);
+        }
+
+        return newList;
     }
 
 
