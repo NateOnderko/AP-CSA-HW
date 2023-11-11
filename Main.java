@@ -14,7 +14,9 @@ public class Main {
         board.turnRiver();
         System.out.println(board.getCommunityCards());
 
-        board.handStrength(board.getPlayers().get(0));
+        for (int i = 0; i < board.getPlayers().size(); i++) {
+            board.handStrength(board.getPlayers().get(i));
+        }
 
     }
 }

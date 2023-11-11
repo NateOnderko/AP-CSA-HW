@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.*;
-import java.util.Collections;
+
 
 public class Board {
 
@@ -118,10 +117,6 @@ public class Board {
             cardList.set(maxIndex, tempCard);
         }
 
-        for (Card c : cardList) {
-            System.out.println(c);
-        }
-
         // check pairs, trips, quads
 
         ArrayList<ArrayList<Card>> pairs = new ArrayList<>();
@@ -133,11 +128,10 @@ public class Board {
         tempPairs.add(cardList.get(0));
 
         for (int i = 1; i < size; i++) {
-            System.out.println(tempPairs);
             if (cardList.get(i).getCardVal() == tempPairs.get(tempPairs.size() - 1).getCardVal()) {
                 tempPairs.add(cardList.get(i));
             }
-            else {
+            if (cardList.get(i).getCardVal() != tempPairs.get(tempPairs.size() - 1).getCardVal() || i == size - 1) {
                 int pairLen = tempPairs.size();
                 if (pairLen == 2) {
                     pairs.add(copyList(tempPairs));
@@ -157,6 +151,36 @@ public class Board {
         System.out.println("Pairs: " + pairs);
         System.out.println("Trips: " + trips);
         System.out.println("Quads: " + quads);
+
+        // checks straights doesn't work if ace is 1 rather than 14. works for all other straights.
+
+        ArrayList<ArrayList<Card>> straights = new ArrayList<>();
+        ArrayList<Card> tempStraight = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            tempStraight.clear();
+            tempStraight.add(cardList.get(i));
+
+            if (i <= size - 5) {
+                for (int j = i + 1; j < i + 5; j++) {
+                    if (cardList.get(j).getCardVal() == tempStraight.get(tempStraight.size() - 1).getCardVal() - 1) {
+                        tempStraight.add(cardList.get(j));
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                if (tempStraight.size() == 5) {
+                    straights.add(copyList(tempStraight));
+                }
+            }
+            else {
+                break;
+            }
+        }
+
+        System.out.println("Straights: " + straights);
     }
 
 
