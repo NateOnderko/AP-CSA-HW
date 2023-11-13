@@ -92,6 +92,50 @@ public class Board {
         }
     }
 
+    public ArrayList<ArrayList<Card>> checkStraight(ArrayList<Card> cardList, ArrayList<ArrayList<Card>> currentStraights, int i) {
+
+        System.out.println("Current Straights: " + currentStraights);
+
+        ArrayList<ArrayList<Card>> returnList = new ArrayList<>();
+        if (i == cardList.size()) {
+            return returnList;
+        }
+
+        int counter = 1;
+        int k = i;
+        while (k < cardList.size() - 1 && cardList.get(k).getCardVal() == cardList.get(k + 1).getCardVal()) {
+            counter += 1;
+            k += 1;
+        }
+
+        if (currentStraights.isEmpty()) {
+            ArrayList<Card> tempStraight = new ArrayList<>();
+            for (int j = 0; j < counter; j++) {
+                tempStraight.add(cardList.get(i + j));
+                returnList.add(copyList(tempStraight));
+                tempStraight.clear();
+            }
+        }
+        else if (cardList.get(i).getCardVal() == currentStraights.get(0).get(currentStraights.get(0).size() - 1).getCardVal() - 1) {
+            for (ArrayList<Card> currentStraight : currentStraights) {
+                for (int j = 0; j < counter; j++) {
+                    currentStraight.add(cardList.get(i + j));
+                    returnList.add(copyList(currentStraight));
+                    currentStraight.remove(currentStraight.size() - 1);
+                }
+            }
+        }
+
+        System.out.println("Return List: " + returnList);
+
+        if (returnList.isEmpty() || returnList.get(0).size() == 5) {
+            return returnList;
+        }
+        else {
+            return checkStraight(cardList, returnList, i + counter);
+        }
+    }
+
     public void handStrength(Player p) {
         ArrayList<Card> cardList = new ArrayList<>();
 
@@ -116,6 +160,8 @@ public class Board {
             cardList.set(i, cardList.get(maxIndex));
             cardList.set(maxIndex, tempCard);
         }
+
+        System.out.println("Card List: " + cardList);
 
         // check pairs, trips, quads
 
@@ -152,32 +198,14 @@ public class Board {
         System.out.println("Trips: " + trips);
         System.out.println("Quads: " + quads);
 
-        // checks straights doesn't work if ace is 1 rather than 14. works for all other straights.
+        // checks straights; doesn't work for 5, 4, 3, 2, ace; also sometimes counts duplicates because of line 206
 
         ArrayList<ArrayList<Card>> straights = new ArrayList<>();
-        ArrayList<Card> tempStraight = new ArrayList<>();
+        ArrayList<ArrayList<Card>> tempStraights = new ArrayList<>();
 
-        for (int i = 0; i < size; i++) {
-            tempStraight.clear();
-            tempStraight.add(cardList.get(i));
-
-            if (i <= size - 5) {
-                for (int j = i + 1; j < i + 5; j++) {
-                    if (cardList.get(j).getCardVal() == tempStraight.get(tempStraight.size() - 1).getCardVal() - 1) {
-                        tempStraight.add(cardList.get(j));
-                    }
-                    else {
-                        break;
-                    }
-                }
-
-                if (tempStraight.size() == 5) {
-                    straights.add(copyList(tempStraight));
-                }
-            }
-            else {
-                break;
-            }
+        for (int i = 0; i < size - 4; i++) {
+            tempStraights.clear();
+            straights.addAll(checkStraight(cardList, tempStraights, i));
         }
 
         System.out.println("Straights: " + straights);
