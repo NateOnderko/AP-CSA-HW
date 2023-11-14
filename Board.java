@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -92,48 +93,35 @@ public class Board {
         }
     }
 
-    public ArrayList<ArrayList<Card>> checkStraight(ArrayList<Card> cardList, ArrayList<ArrayList<Card>> currentStraights, int i) {
 
-        System.out.println("Current Straights: " + currentStraights);
+    public boolean checkStraight(ArrayList<Card> tempHand) {
+        int straightLen = 1;
+        int oldVal = tempHand.get(0).getCardVal();
 
-        ArrayList<ArrayList<Card>> returnList = new ArrayList<>();
-        if (i == cardList.size()) {
-            return returnList;
-        }
-
-        int counter = 1;
-        int k = i;
-        while (k < cardList.size() - 1 && cardList.get(k).getCardVal() == cardList.get(k + 1).getCardVal()) {
-            counter += 1;
-            k += 1;
-        }
-
-        if (currentStraights.isEmpty()) {
-            ArrayList<Card> tempStraight = new ArrayList<>();
-            for (int j = 0; j < counter; j++) {
-                tempStraight.add(cardList.get(i + j));
-                returnList.add(copyList(tempStraight));
-                tempStraight.clear();
+        for (int i = 1; i < 5; i++) {
+            int tempVal = tempHand.get(i).getCardVal();
+            if (tempVal == oldVal - 1 || tempVal == 5 && oldVal == 14) {
+                straightLen += 1;
+                oldVal = tempVal;
             }
-        }
-        else if (cardList.get(i).getCardVal() == currentStraights.get(0).get(currentStraights.get(0).size() - 1).getCardVal() - 1) {
-            for (ArrayList<Card> currentStraight : currentStraights) {
-                for (int j = 0; j < counter; j++) {
-                    currentStraight.add(cardList.get(i + j));
-                    returnList.add(copyList(currentStraight));
-                    currentStraight.remove(currentStraight.size() - 1);
-                }
+            else {
+                return false;
             }
         }
 
-        System.out.println("Return List: " + returnList);
+        return true;
+    }
 
-        if (returnList.isEmpty() || returnList.get(0).size() == 5) {
-            return returnList;
+    public boolean checkFlush(ArrayList<Card> tempHand) {
+        String flushSuit = tempHand.get(0).getSuit();
+
+        for (Card c : tempHand) {
+            if (! c.getSuit().equals(flushSuit)) {
+                return false;
+            }
         }
-        else {
-            return checkStraight(cardList, returnList, i + counter);
-        }
+
+        return true;
     }
 
     public void handStrength(Player p) {
@@ -144,7 +132,7 @@ public class Board {
 
         // sort list max - min
 
-        int size = cardList.size();
+        int size = 7;
 
         for (int i = 0; i < size; i++) {
 
@@ -181,11 +169,9 @@ public class Board {
                 int pairLen = tempPairs.size();
                 if (pairLen == 2) {
                     pairs.add(copyList(tempPairs));
-                }
-                else if (pairLen == 3) {
+                } else if (pairLen == 3) {
                     trips.add(copyList(tempPairs));
-                }
-                else if (pairLen == 4) {
+                } else if (pairLen == 4) {
                     quads.add(copyList(tempPairs));
                 }
 
@@ -198,17 +184,33 @@ public class Board {
         System.out.println("Trips: " + trips);
         System.out.println("Quads: " + quads);
 
-        // checks straights; doesn't work for 5, 4, 3, 2, ace; also sometimes counts duplicates because of line 206
+        ArrayList<Card> tempCardList = new ArrayList<>();
 
         ArrayList<ArrayList<Card>> straights = new ArrayList<>();
-        ArrayList<ArrayList<Card>> tempStraights = new ArrayList<>();
+        ArrayList<ArrayList<Card>> flushes = new ArrayList<>();
+        int count = 0;
 
-        for (int i = 0; i < size - 4; i++) {
-            tempStraights.clear();
-            straights.addAll(checkStraight(cardList, tempStraights, i));
+        for (int i = 0; i < size; i++) {
+            for (int j = i + 1; j < size; j++) {
+                tempCardList.addAll(cardList);
+                tempCardList.remove(Math.max(i, j));
+                tempCardList.remove(Math.min(i, j));
+                count += 1;
+
+                if (checkStraight(tempCardList)) {
+                    straights.add(copyList(tempCardList));
+                }
+                if (checkFlush(tempCardList)) {
+                    flushes.add(copyList(tempCardList));
+                }
+
+                tempCardList.clear();
+            }
         }
 
         System.out.println("Straights: " + straights);
+        System.out.println("Flushes: " + flushes);
+
     }
 
 
