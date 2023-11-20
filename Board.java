@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -192,12 +191,17 @@ public class Board {
 
         double handVal = 0;
         int highCard;
+        boolean straight;
+        boolean flush;
 
         for (int i = 0; i < size; i++) {
             for (int j = i + 1; j < size; j++) {
                 tempCardList.addAll(cardList);
                 tempCardList.remove(Math.max(i, j));
                 tempCardList.remove(Math.min(i, j));
+
+                straight = checkStraight(tempCardList);
+                flush = checkFlush(tempCardList);
 
                 if (tempCardList.get(0).getCardVal() == 14 && tempCardList.get(1).getCardVal() == 5) {
                     highCard = 3;
@@ -208,7 +212,7 @@ public class Board {
                 }
 
 
-                if (checkStraight(tempCardList) && checkFlush(tempCardList)) {
+                if (straight && flush) {
                     straightFlushes.add(copyList(tempCardList));
                     handVal = Math.max(handVal, 8 * 13 + highCard);
                 }
@@ -227,12 +231,12 @@ public class Board {
                     handVal = Math.max(handVal, 6 * 13 + trips.get(0).get(0).getCardVal() - 2 + 0.01 * (pairs.get(0).get(0).getCardVal() - 2));
                 }
 
-                else if (checkFlush(tempCardList)) {
+                else if (flush) {
                     flushes.add(copyList(tempCardList));
                     handVal = Math.max(handVal, 5 * 13 + highCard);
                 }
 
-                else if (checkStraight(tempCardList)) {
+                else if (straight) {
                     straights.add(copyList(tempCardList));
                     handVal = Math.max(handVal, 4 * 13 + highCard);
                 }
@@ -248,7 +252,18 @@ public class Board {
                 }
 
                 else if (pairs.size() >= 2) {
-                    // two-pair
+                    if (tempCardList.get(0).getCardVal() == pairs.get(0).get(0).getCardVal()) {
+                        if (tempCardList.get(2).getCardVal() == pairs.get(1).get(0).getCardVal()) {
+                            highCard = tempCardList.get(4).getCardVal();
+                        }
+                        else {
+                            highCard = tempCardList.get(2).getCardVal();
+                        }
+                    }
+                    else {
+                        highCard = tempCardList.get(0).getCardVal();
+                    }
+                    handVal = Math.max(handVal, 2 * 13 + 0.1 * (pairs.get(0).get(0).getCardVal() - 2) + 0.001 * (pairs.get(1).get(1).getCardVal() - 2) + 0.00001 * highCard);
                 }
 
                 else if (! pairs.isEmpty()) {
@@ -258,7 +273,7 @@ public class Board {
                     else {
                         highCard = tempCardList.get(0).getCardVal();
                     }
-                    handVal = Math.max(handVal, 3 * 13 + pairs.get(0).get(0).getCardVal() - 2 + 0.01 * highCard);
+                    handVal = Math.max(handVal, 13 + pairs.get(0).get(0).getCardVal() - 2 + 0.01 * highCard);
                 }
 
                 else {
@@ -271,17 +286,13 @@ public class Board {
 
         System.out.println("Straights: " + straights);
         System.out.println("Flushes: " + flushes);
-
+        System.out.println("Straight Flushes: " + straightFlushes);
+        System.out.println("Hand Value: " + handVal);
     }
 
 
     public ArrayList<Card> copyList(ArrayList<Card> c) {
-        ArrayList<Card> newList = new ArrayList<>();
-        for(Card card : c)
-        {
-            newList.add(card);
-        }
-        return newList;
+        return new ArrayList<>(c);
     }
 
 
